@@ -171,6 +171,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiModels\ClientReferralForm.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -206,17 +207,42 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ValuesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610150122234_InitialCreate.cs" />
+    <Compile Include="Migrations\201610150122234_InitialCreate.Designer.cs">
+      <DependentUpon>201610150122234_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610150218339_Add_ServiceCategories_to_Services.cs" />
+    <Compile Include="Migrations\201610150218339_Add_ServiceCategories_to_Services.Designer.cs">
+      <DependentUpon>201610150218339_Add_ServiceCategories_to_Services.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610150225024_Service_ManytoMany_AgencyUser.cs" />
+    <Compile Include="Migrations\201610150225024_Service_ManytoMany_AgencyUser.Designer.cs">
+      <DependentUpon>201610150225024_Service_ManytoMany_AgencyUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610152155415_addOrganization_toClient.cs" />
+    <Compile Include="Migrations\201610152155415_addOrganization_toClient.Designer.cs">
+      <DependentUpon>201610152155415_addOrganization_toClient.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\AgencyUser.cs" />
+    <Compile Include="Models\Client.cs" />
+    <Compile Include="Models\Referral.cs" />
+    <Compile Include="Models\Service.cs" />
+    <Compile Include="Models\ServiceCategory.cs" />
+    <Compile Include="NPLContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />
     <Compile Include="Results\ChallengeResult.cs" />
+    <Compile Include="Services\ServiceRepository.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -284,6 +310,20 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201610150122234_InitialCreate.resx">
+      <DependentUpon>201610150122234_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610150218339_Add_ServiceCategories_to_Services.resx">
+      <DependentUpon>201610150218339_Add_ServiceCategories_to_Services.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610150225024_Service_ManytoMany_AgencyUser.resx">
+      <DependentUpon>201610150225024_Service_ManytoMany_AgencyUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610152155415_addOrganization_toClient.resx">
+      <DependentUpon>201610152155415_addOrganization_toClient.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
