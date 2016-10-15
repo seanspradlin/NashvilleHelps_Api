@@ -45,7 +45,7 @@ namespace NPL_API.Migrations
             var Service7 = new Service { Name = "Reading and Writing Tutoring", Category = ServiceCategory1 };
 
             var Service8 = new Service { Name = "Employment or Job Training", Category = ServiceCategory2 };
-            var Service9 = new Service { Name = "Free Basic Computer Skills Training", Category = ServiceCategory2 };
+            var Service9 = new Service { Name = "Basic Computer Skills Training", Category = ServiceCategory2 };
             var Service10 = new Service { Name = "Resume Writing", Category = ServiceCategory2 };
             var Service11 = new Service { Name = "Vocational Rehabilitation", Category = ServiceCategory2 };
 
@@ -88,7 +88,7 @@ namespace NPL_API.Migrations
                 );
 
             context.Services.AddOrUpdate(
-                c => new { c.Name, c.Category.Id },
+                c => c.Name,
                 Service1, Service2, Service3, Service4, Service5, Service6, Service7, Service8, Service9, Service10,
                 Service11, Service12, Service13, Service14, Service15, Service16, Service17, Service18, Service19, Service20,
                 Service21, Service22, Service23, Service24, Service25, Service26, Service27, Service28, Service29, Service30,
