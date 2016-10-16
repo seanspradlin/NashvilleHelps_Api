@@ -16,7 +16,7 @@ winston.level = config.logLevel;
 mongoose.connect(config.db.url);
 
 app.use(helmet());
-app.use('/docs', express.static(`${__dirname}/docs`));
+app.use('/', express.static(`${__dirname}/docs`));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
