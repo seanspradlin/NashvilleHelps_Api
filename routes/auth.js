@@ -2,7 +2,6 @@ const router = require('express').Router();
 const User = require('../models').User;
 const utils = require('../lib/utils');
 const winston = require('winston');
-const Promise = require('bluebird');
 
 /**
  * @api {get} /auth Get current user profile
@@ -25,8 +24,8 @@ router.get('/', (req, res) => {
     res.json({
       _id: req.user._id,
       name: {
-        first: req.user.first,
-        last: req.user.last,
+        first: req.user.name.first,
+        last: req.user.name.last,
       },
       email: req.user.email,
       phone: req.user.phone,
@@ -67,8 +66,8 @@ router.post('/register', (req, res) => {
         res.json({
           _id: user._id,
           name: {
-            first: user.first,
-            last: user.last,
+            first: user.name.first,
+            last: user.name.last,
           },
           email: user.email,
           phone: user.phone,
@@ -105,7 +104,7 @@ router.post('/login', (req, res) => {
   const required = ['email', 'password'];
   if (!utils.checkProperties(required, req.body)) res.status(422).end();
   else {
-    User.findOne({ 'local.email': req.body.email })
+    User.findOne({ email: req.body.email })
       .then(user => {
         if (!user.validPassword(req.body.password)) {
           res.status(401).end();
@@ -118,8 +117,8 @@ router.post('/login', (req, res) => {
               res.json({
                 _id: user._id,
                 name: {
-                  first: user.first,
-                  last: user.last,
+                  first: user.name.first,
+                  last: user.name.last,
                 },
                 email: user.email,
                 phone: user.phone,
