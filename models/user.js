@@ -1,5 +1,5 @@
 'use strict';
-const mongoose = require('mongoose');
+const mongoose = require('../lib/mongoose');
 const Schema = mongoose.Schema;
 const bcrypt = require('bcrypt-nodejs');
 
@@ -18,7 +18,7 @@ const schema = new Schema({
 });
 
 schema.methods.generateHash = function generateHash(password) {
-  bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
 schema.methods.validPassword = function validPassword(password) {
