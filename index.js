@@ -2,7 +2,6 @@
 const config = require('./config');
 const express = require('express');
 const winston = require('winston');
-const mongoose = require('mongoose');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -12,8 +11,6 @@ const routes = require('./routes');
 const app = express();
 
 winston.level = config.logLevel;
-
-mongoose.connect(config.db.url);
 
 app.use(helmet());
 app.use('/', express.static(`${__dirname}/docs`));
