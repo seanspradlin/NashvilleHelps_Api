@@ -22,8 +22,10 @@
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
     "express": "^4.14.0",
+    "express-session": "^1.14.1",
     "helmet": "^2.3.0",
     "mongoose": "^4.6.3",
+    "passport": "^0.3.2",
     "winston": "^2.2.0"
   },
   "devDependencies": {
