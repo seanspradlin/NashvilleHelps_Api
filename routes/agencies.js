@@ -19,8 +19,8 @@ router.get('/', (req, res) => {
   winston.log('GET /agencies');
   if (req.isAuthenticated()) {
     Agency.find()
-      .then(users => {
-        res.json(users);
+      .then(agency => {
+        res.json(agency);
       })
       .catch(error => {
         winston.error(error);
@@ -41,6 +41,19 @@ router.get('/', (req, res) => {
  *
  * @apiUse UnauthorizedError
  */
+router.get('/:agency_id', (req, res) => {
+  winston.log(`GET /agencies/${req.params.agency_id}`);
+  if (req.isAuthenticated()) {
+    Agency.findOne({ _id: req.params.agency_id })
+      .then(agency => {
+        res.json(agency);
+      })
+      .catch(error => {
+        winston.error(error);
+        res.status(500).end();
+      });
+  } else res.status(401).end();
+});
 
 /**
  * @api {post} /agencies Create an agency
