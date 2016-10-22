@@ -49,8 +49,12 @@ router.get('/', (req, res) => {
 router.post('/register', (req, res) => {
   winston.log('POST /auth/register');
   const required = ['firstName', 'lastName', 'email', 'password', 'key'];
-  if (!utils.checkProperties(required, req.body)) res.status(422).end();
-  else {
+  if (!utils.checkProperties(required, req.body)) {
+    res
+      .json({ error: `${required.join(',')} are required` })
+      .status(422)
+      .end();
+  } else {
     User.findOne({ email: req.body.email })
       .then(user => {
         if (user) return Promise.reject();
@@ -102,8 +106,12 @@ router.post('/register', (req, res) => {
  */
 router.post('/login', (req, res) => {
   const required = ['email', 'password'];
-  if (!utils.checkProperties(required, req.body)) res.status(422).end();
-  else {
+  if (!utils.checkProperties(required, req.body)) {
+    res
+      .json({ error: `${required.join(',')} are required` })
+      .status(422)
+      .end();
+  } else {
     User.findOne({ email: req.body.email })
       .then(user => {
         if (!user.validPassword(req.body.password)) {
