@@ -4,7 +4,8 @@
   "description": "Back-end REST API for the Nashville Helps application.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "docs": "apidoc -i routes -o docs"
   },
   "repository": {
     "type": "git",
@@ -28,11 +29,12 @@
     "winston": "^2.2.0"
   },
   "devDependencies": {
-    "typescript": "^2.0.3",
+    "apidoc": "^0.16.1",
     "eslint": "^2.10.2",
     "eslint-config-airbnb": "^9.0.1",
     "eslint-plugin-import": "^1.8.0",
     "eslint-plugin-jsx-a11y": "^1.2.0",
-    "eslint-plugin-react": "^5.1.1"
+    "eslint-plugin-react": "^5.1.1",
+    "typescript": "^2.0.3"
   }
 }
