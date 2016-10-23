@@ -23,7 +23,7 @@ const winston = require('winston');
 router.get('/', (req, res) => {
   winston.debug('GET /agencies');
 
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() && req.user.isAdmin) {
     Agency.find()
       .then(agency => {
         res.json(agency);
@@ -55,7 +55,7 @@ router.get('/', (req, res) => {
 router.get('/:agency_id', (req, res) => {
   winston.debug(`GET /agencies/${req.params.agency_id}`);
 
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() && req.user.isAdmin) {
     Agency.findOne({ _id: req.params.agency_id })
       .then(agency => {
         res.json(agency);
@@ -96,7 +96,7 @@ router.post('/', (req, res) => {
   winston.debug('POST /agencies');
 
   const required = ['name', 'phone'];
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() && req.user.isAdmin) {
     if (!utils.checkProperties(required, req.body)) {
       res
         .status(422)
@@ -144,7 +144,7 @@ router.post('/', (req, res) => {
 router.put('/:agency_id', (req, res) => {
   winston.debug(`PUT /agencies/${req.params.agency_id}`);
 
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() && req.user.isAdmin) {
     Agency.findById(req.params.agency_id)
       .then(agency => {
         agency.name = req.body.name || agency.name;
@@ -181,7 +181,7 @@ router.put('/:agency_id', (req, res) => {
 router.delete('/:agency_id', (req, res) => {
   winston.debug(`DELETE /agencies/${req.params.agency_id}`);
 
-  if (req.isAuthenticated()) {
+  if (req.isAuthenticated() && req.user.isAdmin) {
     Agency.findOneAndRemove({ _id: req.params.agency_id })
       .then(() => {
         res.end();
