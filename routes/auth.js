@@ -51,9 +51,8 @@ router.post('/register', (req, res) => {
   const required = ['firstName', 'lastName', 'email', 'password', 'key'];
   if (!utils.checkProperties(required, req.body)) {
     res
-      .json({ error: `${required.join(',')} are required` })
       .status(422)
-      .end();
+      .json({ error: `${required.join(',')} are required` });
   } else {
     User.findOne({ email: req.body.email })
       .then(user => {
@@ -109,9 +108,8 @@ router.post('/login', (req, res) => {
   const required = ['email', 'password'];
   if (!utils.checkProperties(required, req.body)) {
     res
-      .json({ error: `${required.join(',')} are required` })
       .status(422)
-      .end();
+      .json({ error: `${required.join(',')} are required` });
   } else {
     User.findOne({ email: req.body.email })
       .then(user => {
