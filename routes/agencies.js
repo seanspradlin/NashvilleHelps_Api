@@ -8,15 +8,16 @@ const winston = require('winston');
  * @apiName GetAgency
  * @apiGroup Agency
  *
- * @apiSuccess  {String}  _id
- * @apiSuccess  {String}  name
- * @apiSuccess  {Object}  address
- * @apiSuccess  {String}  address.street1
- * @apiSuccess  {String}  address.street2
- * @apiSuccess  {String}  address.city
- * @apiSuccess  {String}  address.state
- * @apiSuccess  {String}  address.postal
- * @apiSuccess  {String}  phone
+ * @apiSuccess  {Object[]}  agencies
+ * @apiSuccess  {String}    agencies._id
+ * @apiSuccess  {String}    agencies.name
+ * @apiSuccess  {Object}    agencies.address
+ * @apiSuccess  {String}    agencies.address.street1
+ * @apiSuccess  {String}    agencies.address.street2
+ * @apiSuccess  {String}    agencies.address.city
+ * @apiSuccess  {String}    agencies.address.state
+ * @apiSuccess  {String}    agencies.address.postal
+ * @apiSuccess  {String}    agencies.phone
  *
  * @apiUse UnauthorizedError
  */
