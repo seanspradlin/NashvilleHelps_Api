@@ -57,7 +57,7 @@ router.get('/:agency_id', (req, res) => {
   winston.debug(`GET /agencies/${req.params.agency_id}`);
 
   if (req.isAuthenticated() && req.user.isAdmin) {
-    Agency.findOne({ _id: req.params.agency_id })
+    Agency.findById(req.params.agency_id)
       .then(agency => {
         res.json(agency);
       })
@@ -175,7 +175,7 @@ router.put('/:agency_id', (req, res) => {
  * @apiName DeleteAgency
  * @apiGroup Agency
  *
- * @apiParam  {ObjectId}  agency_id
+ * @apiParam  {String}  agency_id
  *
  * @apiUse UnauthorizedError
  */
