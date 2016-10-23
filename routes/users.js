@@ -24,7 +24,14 @@ router.get('/', (req, res) => {
   if (req.isAuthenticated() && req.user.isAdmin) {
     User.find()
       .then(users => {
-        res.json(users);
+        res.json(users.map(user => ({
+          _id: user._id,
+          agency: user.agency,
+          email: user.email,
+          phone: user.phone,
+          isAdmin: user.isAdmin,
+          name: user.name,
+        })));
       })
       .catch(error => {
         winston.error(error);
@@ -52,9 +59,16 @@ router.get('/:user_id', (req, res) => {
   winston.debug(`GET /users/${req.params.user_id}`);
 
   if (req.isAuthenticated() && req.user.isAdmin) {
-    User.findById(req.params.agency_id)
+    User.findById(req.params.user_id)
       .then(user => {
-        res.json(user);
+        res.json({
+          _id: user._id,
+          agency: user.agency,
+          email: user.email,
+          phone: user.phone,
+          isAdmin: user.isAdmin,
+          name: user.name,
+        });
       })
       .catch(error => {
         winston.error(error);
