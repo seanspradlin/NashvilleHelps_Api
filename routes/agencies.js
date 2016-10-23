@@ -21,7 +21,7 @@ const winston = require('winston');
  * @apiUse UnauthorizedError
  */
 router.get('/', (req, res) => {
-  winston.log('GET /agencies');
+  winston.debug('GET /agencies');
 
   if (req.isAuthenticated()) {
     Agency.find()
@@ -53,7 +53,7 @@ router.get('/', (req, res) => {
  * @apiUse UnauthorizedError
  */
 router.get('/:agency_id', (req, res) => {
-  winston.log(`GET /agencies/${req.params.agency_id}`);
+  winston.debug(`GET /agencies/${req.params.agency_id}`);
 
   if (req.isAuthenticated()) {
     Agency.findOne({ _id: req.params.agency_id })
@@ -93,7 +93,7 @@ router.get('/:agency_id', (req, res) => {
  * @apiUse UnauthorizedError
  */
 router.post('/', (req, res) => {
-  winston.log('POST /agencies');
+  winston.debug('POST /agencies');
 
   const required = ['name', 'phone'];
   if (req.isAuthenticated()) {
@@ -142,7 +142,7 @@ router.post('/', (req, res) => {
  * @apiUse UnauthorizedError
  */
 router.put('/:agency_id', (req, res) => {
-  winston.log(`PUT /agencies/${req.params.agency_id}`);
+  winston.debug(`PUT /agencies/${req.params.agency_id}`);
 
   if (req.isAuthenticated()) {
     Agency.findById(req.params.agency_id)
@@ -179,7 +179,7 @@ router.put('/:agency_id', (req, res) => {
  * @apiUse UnauthorizedError
  */
 router.delete('/:agency_id', (req, res) => {
-  winston.log(`DELETE /agencies/${req.params.agency_id}`);
+  winston.debug(`DELETE /agencies/${req.params.agency_id}`);
 
   if (req.isAuthenticated()) {
     Agency.findOneAndRemove({ _id: req.params.agency_id })
@@ -194,4 +194,6 @@ router.delete('/:agency_id', (req, res) => {
     res.status(401).end();
   }
 });
+
+module.exports = router;
 
