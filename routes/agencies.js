@@ -2,6 +2,8 @@ const router = require('express').Router();
 const Agency = require('../models').Agency;
 const utils = require('../lib/utils');
 const winston = require('winston');
+const ExpiryStore = require('../lib/expiry-store');
+const store = new ExpiryStore();
 
 /**
  * @api {get} /agencies Get all agencies
@@ -186,6 +188,40 @@ router.delete('/:agency_id', (req, res) => {
     Agency.findOneAndRemove({ _id: req.params.agency_id })
       .then(() => {
         res.end();
+      })
+      .catch(error => {
+        winston.error(error);
+        res.status(500).end();
+      });
+  } else {
+    res.status(401).end();
+  }
+});
+
+/**
+ * @api {post} /agencies/:agency_id/token
+ * @apiName AgencyToken
+ * @apiGroup Agency
+ *
+ * @apiParam  {String}  agency_id
+ * @apiParam  {String}  email
+ *
+ * @apiSuccess  {String}  token
+ *
+ * @apiUse UnauthorizedError
+ */
+router.post('/:agency_id/token', (req, res) => {
+  winston.debug(`POST /agencies/${req.params.agency_id}/token`);
+  if (!req.body.email) {
+    res.status(422).json({ error: 'email required' });
+  } else if (req.isAuthenticated() && req.user.isAdmin) {
+    Agency.findById(req.params.agency_id)
+      .then(agency => {
+        const token = store.generate({
+          agency_id: agency._id,
+          email: req.body.email,
+        });
+        res.json({ token });
       })
       .catch(error => {
         winston.error(error);
