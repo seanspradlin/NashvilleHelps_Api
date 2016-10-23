@@ -1,0 +1,93 @@
+const router = require('express').Router();
+const User = require('../models').User;
+const winston = require('winston');
+
+/**
+ * @api {get} /users Get all users
+ * @apiName GetUser
+ * @apiGroup User
+ *
+ * @apiSuccess  {Object[]}  users
+ * @apiSuccess  {Object}    users.name
+ * @apiSuccess  {String}    users.name.first
+ * @apiSuccess  {String}    users.name.last
+ * @apiSuccess  {String}    users.email
+ * @apiSuccess  {String}    users.phone
+ * @apiSuccess  {String}    users.agency
+ * @apiSuccess  {Boolean}   users.isAdmin
+ *
+ * @apiUse UnauthorizedError
+ */
+router.get('/', (req, res) => {
+  winston.debug('GET /users');
+
+  if (req.isAuthenticated() && req.user.isAdmin) {
+    User.find()
+      .then(users => {
+        res.json(users);
+      })
+      .catch(error => {
+        winston.error(error);
+        res.status(500).end();
+      });
+  } else res.status(401).end();
+});
+
+/**
+ * @api {get} /users/:user_id Get a specific user_id
+ * @apiName GetSpecificUser
+ * @apiGroup User
+ *
+ * @apiSuccess  {Object}    users.name
+ * @apiSuccess  {String}    users.name.first
+ * @apiSuccess  {String}    users.name.last
+ * @apiSuccess  {String}    users.email
+ * @apiSuccess  {String}    users.phone
+ * @apiSuccess  {String}    users.agency
+ * @apiSuccess  {Boolean}   users.isAdmin
+ *
+ * @apiUse UnauthorizedError
+ */
+router.get('/:user_id', (req, res) => {
+  winston.debug(`GET /users/${req.params.user_id}`);
+
+  if (req.isAuthenticated() && req.user.isAdmin) {
+    User.findById(req.params.agency_id)
+      .then(user => {
+        res.json(user);
+      })
+      .catch(error => {
+        winston.error(error);
+        res.status(500).end();
+      });
+  } else res.status(401).end();
+});
+
+/**
+ * @api {delete} /users/:user_id Delete a user_id
+ * @apiName DeleteUser
+ * @apiGroup User
+ *
+ * @apiParam  {String}  user_id
+ *
+ * @apiUse UnauthorizedError
+ */
+router.delete('/:user_id', (req, res) => {
+  winston.debug(`DELETE /users/${req.params.user_id}`);
+
+  if (req.isAuthenticated() && req.user.isAdmin) {
+    User.findOneAndRemove({ _id: req.params.agency_id })
+      .then(() => {
+        res.end();
+      })
+      .catch(error => {
+        winston.error(error);
+        res.status(500).end();
+      });
+  } else {
+    res.status(401).end();
+  }
+});
+
+module.exports = router;
+

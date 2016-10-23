@@ -1,9 +1,13 @@
 const router = require('express').Router();
-const auth = require('./auth');
+const account = require('./account');
 const agencies = require('./agencies');
+const auth = require('./auth');
+const users = require('./users');
 
-router.use('/auth', auth);
+router.use('/account', account);
 router.use('/agencies', agencies);
+router.use('/auth', auth);
+router.use('/users', users);
 
 module.exports = router;
 
