@@ -78,7 +78,7 @@ router.get('/:agency_id', (req, res) => {
  * @apiParam  {String}  street2
  * @apiParam  {String}  city
  * @apiParam  {String}  state
- * @apiParma  {String}  postal
+ * @apiParam  {String}  postal
  * @apiParam  {String}  phone
  *
  * @apiSuccess  {String}  _id
@@ -137,7 +137,7 @@ router.post('/', (req, res) => {
  * @apiParam  {String}  [street2]
  * @apiParam  {String}  [city]
  * @apiParam  {String}  [state]
- * @apiParma  {String}  [postal]
+ * @apiParam  {String}  [postal]
  * @apiParam  {String}  [phone]
  *
  * @apiUse UnauthorizedError
