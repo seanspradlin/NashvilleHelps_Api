@@ -8,8 +8,11 @@ const schema = new Schema({
     required: true,
   },
   address: {
-    type: String,
-    required: true,
+    street1: String,
+    street2: String,
+    city: String,
+    state: String,
+    postal: String,
   },
   phone: {
     type: String,
