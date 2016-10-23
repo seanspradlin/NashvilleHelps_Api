@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha",
-    "docs": "apidoc -i routes -o docs"
+    "docs": "apidoc -i routes -o docs",
+    "seed": "node seed.js"
   },
   "repository": {
     "type": "git",
