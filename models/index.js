@@ -1,4 +1,3 @@
-'use strict';
 const Agency = require('./agency');
 const Client = require('./client');
 const Service = require('./service');
