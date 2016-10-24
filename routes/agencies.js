@@ -199,7 +199,7 @@ router.delete('/:agency_id', (req, res) => {
 });
 
 /**
- * @api {post} /agencies/:agency_id/token
+ * @api {post} /agencies/:agency_id/token Create a registration token
  * @apiName AgencyToken
  * @apiGroup Agency
  *
