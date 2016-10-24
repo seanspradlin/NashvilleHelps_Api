@@ -6,37 +6,6 @@ const ExpiryStore = require('../lib/expiry-store');
 const store = new ExpiryStore();
 
 /**
- * @api {get} /auth Get current user profile
- * @apiName GetAuth
- * @apiGroup Auth
- *
- * @apiSuccess  {ObjectId}  _id         Unique user ID
- * @apiSuccess  {Object}    name
- * @apiSuccess  {String}    name.first  First name
- * @apiSuccess  {String}    name.last   Last name
- * @apiSuccess  {String}    email       Email
- * @apiSuccess  {String}    phone       Phone number
- * @apiSuccess  {ObjectId}  agency      Unique ID of agency
- *
- * @apiUse UnauthorizedError
- */
-router.get('/', (req, res) => {
-  winston.debug('GET /auth');
-  if (req.isAuthenticated()) {
-    res.json({
-      _id: req.user._id,
-      name: {
-        first: req.user.name.first,
-        last: req.user.name.last,
-      },
-      email: req.user.email,
-      phone: req.user.phone,
-      agency: req.user.agency,
-    });
-  } else res.status(401).end();
-});
-
-/**
  * @api {post}  /auth/register  Create a account
  * @apiName PostAuthRegister
  * @apiGroup Auth
@@ -70,15 +39,17 @@ router.post('/register', (req, res) => {
           return newUser.save();
         })
         .then(user => {
-          res.json({
-            _id: user._id,
-            name: {
-              first: user.name.first,
-              last: user.name.last,
-            },
-            email: user.email,
-            phone: user.phone,
-            agency: user.agency,
+          req.login(user, () => {
+            res.json({
+              _id: user._id,
+              name: {
+                first: user.name.first,
+                last: user.name.last,
+              },
+              email: user.email,
+              phone: user.phone,
+              agency: user.agency,
+            });
           });
         })
         .catch(error => {
