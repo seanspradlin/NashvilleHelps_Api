@@ -41,7 +41,7 @@ router.get('/', (req, res) => {
 });
 
 /**
- * @api {get} /users/:user_id Get a specific user_id
+ * @api {get} /users/:user_id Get a specific user
  * @apiName GetSpecificUser
  * @apiGroup User
  *
@@ -78,7 +78,7 @@ router.get('/:user_id', (req, res) => {
 });
 
 /**
- * @api {delete} /users/:user_id Delete a user_id
+ * @api {delete} /users/:user_id Delete a user
  * @apiName DeleteUser
  * @apiGroup User
  *
