@@ -232,5 +232,47 @@ router.post('/:agency_id/token', (req, res) => {
   }
 });
 
+/**
+ * @api {get} /agencies/:agency_id/services Get a list of provided services
+ * @apiName GetAgencyServices
+ * @apiGroup Agency
+ *
+ * @apiParam  {String}  agency_id
+ *
+ * @apiSuccess  {Object[]}  services
+ * @apiSuccess  {String}    services._id
+ * @apiSuccess  {String}    services.name
+ * @apiSuccess  {String}    services.category
+ *
+ * @apiUse UnauthorizedError
+ */
+
+/**
+ * @api {post} /agencies/:agency_id/services Associate service to agency
+ * @apiName CreateAgencyService
+ * @apiGroup Agency
+ *
+ * @apiParam  {String}  agency_id
+ * @apiParam  {String}  service_id
+ *
+ * @apiSuccess  {String}    _id
+ * @apiSuccess  {String}    name
+ * @apiSuccess  {String}    category
+ *
+ * @apiUse UnauthorizedError
+ * @apiUse UnprocessableEntityError
+ */
+
+/**
+ * @api {delete} /agencies/:agency_id/services/:service_id Disassociate service from agency
+ * @apiName DeleteAgencyService
+ * @apiGroup Agency
+ *
+ * @apiParam  {String}  agency_id
+ * @apiParam  {String}  service_id
+ *
+ * @apiUse UnprocessableEntityError
+ */
+
 module.exports = router;
 
