@@ -17,6 +17,8 @@ const schema = new Schema({
     type: String,
     required: true,
   },
+  services: [Schema.Types.ObjectId],
 });
 
 module.exports = mongoose.model('Agency', schema);
+
