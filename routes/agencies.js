@@ -29,7 +29,9 @@ const privileged = (agency, user) => user.isAdmin || user.agency === agency;
 router.get('/', (req, res) => {
   winston.debug('GET /agencies');
 
-  if (req.isAuthenticated() && req.user.isAdmin) {
+  if (!req.isAuthenticated() || !req.user.isAdmin) {
+    res.status(401).end();
+  } else {
     Agency.find()
       .then(agency => {
         res.json(agency);
@@ -38,13 +40,15 @@ router.get('/', (req, res) => {
         winston.error(error);
         res.status(500).end();
       });
-  } else res.status(401).end();
+  }
 });
 
 /**
  * @api {get} /agencies/:agency_id Get a specific agency
  * @apiName GetSpecificAgency
  * @apiGroup Agency
+ *
+ * @apiParam  {String}  agency_id
  *
  * @apiSuccess  {String}  _id
  * @apiSuccess  {String}  name
@@ -61,7 +65,9 @@ router.get('/', (req, res) => {
 router.get('/:agency_id', (req, res) => {
   winston.debug(`GET /agencies/${req.params.agency_id}`);
 
-  if (req.isAuthenticated() && privileged(req.params.agency_id, req.user)) {
+  if (!req.isAuthenticated() || !privileged(req.params.agency_id, req.user)) {
+    res.status(401).end();
+  } else {
     Agency.findById(req.params.agency_id)
       .then(agency => {
         res.json(agency);
@@ -70,7 +76,7 @@ router.get('/:agency_id', (req, res) => {
         winston.error(error);
         res.status(500).end();
       });
-  } else res.status(401).end();
+  }
 });
 
 /**
@@ -102,32 +108,32 @@ router.post('/', (req, res) => {
   winston.debug('POST /agencies');
 
   const required = ['name', 'phone'];
-  if (req.isAuthenticated() && req.user.isAdmin) {
-    if (!utils.checkProperties(required, req.body)) {
-      res
-        .status(422)
-        .json({ error: `${required.join(',')} are required` });
-    } else {
-      const agency = new Agency({
-        name: req.body.name,
-        address: {
-          street1: req.body.street1,
-          street2: req.body.street2,
-          city: req.body.city,
-          state: req.body.state,
-          postal: req.body.postal,
-        },
-        phone: req.body.phone,
+  if (!req.isAuthenticated() || !req.user.isAdmin) {
+    res.status(401).end();
+  } else if (!utils.checkProperties(required, req.body)) {
+    res
+      .status(422)
+      .json({ error: `${required.join(',')} are required` });
+  } else {
+    const agency = new Agency({
+      name: req.body.name,
+      address: {
+        street1: req.body.street1,
+        street2: req.body.street2,
+        city: req.body.city,
+        state: req.body.state,
+        postal: req.body.postal,
+      },
+      phone: req.body.phone,
+    });
+    agency.save()
+      .then(a => {
+        res.json(a);
+      })
+      .catch(error => {
+        winston.error(error);
+        res.status(500).end();
       });
-      agency.save()
-        .then(a => {
-          res.json(a);
-        })
-        .catch(error => {
-          winston.error(error);
-          res.status(500).end();
-        });
-    }
   }
 });
 
@@ -150,7 +156,9 @@ router.post('/', (req, res) => {
 router.put('/:agency_id', (req, res) => {
   winston.debug(`PUT /agencies/${req.params.agency_id}`);
 
-  if (req.isAuthenticated() && privileged(req.params.agency_id, req.user)) {
+  if (!req.isAuthenticated() || !privileged(req.params.agency_id, req.user)) {
+    res.status(401).end();
+  } else {
     Agency.findById(req.params.agency_id)
       .then(agency => {
         agency.name = req.body.name || agency.name;
@@ -170,8 +178,6 @@ router.put('/:agency_id', (req, res) => {
           .status(400)
           .json({ error: 'bad request' });
       });
-  } else {
-    res.status(401).end();
   }
 });
 
@@ -187,7 +193,9 @@ router.put('/:agency_id', (req, res) => {
 router.delete('/:agency_id', (req, res) => {
   winston.debug(`DELETE /agencies/${req.params.agency_id}`);
 
-  if (req.isAuthenticated() && req.user.isAdmin) {
+  if (!req.isAuthenticated() || !req.user.isAdmin) {
+    res.status(401).end();
+  } else {
     Agency.findOneAndRemove({ _id: req.params.agency_id })
       .then(() => {
         res.end();
@@ -196,8 +204,6 @@ router.delete('/:agency_id', (req, res) => {
         winston.error(error);
         res.status(500).end();
       });
-  } else {
-    res.status(401).end();
   }
 });
 
