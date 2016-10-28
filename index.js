@@ -1,3 +1,4 @@
+const path = require('path');
 const config = require('./config');
 const express = require('express');
 const winston = require('winston');
@@ -7,12 +8,14 @@ const cookieParser = require('cookie-parser');
 const passport = require('./lib/passport');
 const session = require('express-session');
 const routes = require('./routes');
+const staticPath = path.resolve(config.static);
 const app = express();
 
 winston.level = config.logLevel;
 
+app.use(express.static(staticPath));
 app.use(helmet());
-app.use('/', express.static(`${__dirname}/docs`));
+app.use('/docs', express.static(`${__dirname}/docs`));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

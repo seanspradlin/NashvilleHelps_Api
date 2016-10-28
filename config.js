@@ -10,5 +10,6 @@ module.exports = {
     resave: false,
     saveUninitialized: true,
   },
+  static: process.env.STATIC_ROOT || './static',
 };
 
