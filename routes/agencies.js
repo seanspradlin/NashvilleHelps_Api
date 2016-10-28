@@ -198,7 +198,7 @@ router.delete('/:agency_id', (req, res) => {
   } else {
     Agency.findOneAndRemove({ _id: req.params.agency_id })
       .then(() => {
-        res.end();
+        res.status(204).end();
       })
       .catch(error => {
         winston.error(error);
