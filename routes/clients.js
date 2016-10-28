@@ -198,7 +198,7 @@ router.post('/', (req, res) => {
       _id: { $in: serviceArray },
     })
       .then(services => {
-        if (!services[ 0 ]) {
+        if (!services[0]) {
           res
             .status(400)
             .json({ error: 'No service found' });
