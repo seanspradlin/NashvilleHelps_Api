@@ -41,7 +41,7 @@ const winston = require('winston');
 router.get('/', (req, res) => {
   winston.debug('GET /clients');
 
-  if (req.isAuthenticated()) {
+  if (!req.isAuthenticated()) {
     res.status(401).end();
   } else {
     const options = {};
