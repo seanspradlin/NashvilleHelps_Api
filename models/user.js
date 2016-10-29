@@ -18,6 +18,7 @@ const schema = new Schema({
     type: Boolean,
     default: false,
   },
+  services: [Schema.Types.ObjectId],
 });
 
 schema.methods.generateHash = function generateHash(password) {
