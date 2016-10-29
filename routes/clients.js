@@ -41,22 +41,22 @@ const winston = require('winston');
 router.get('/', (req, res) => {
   winston.debug('GET /clients');
 
-  if (!req.isAuthenticated()) {
+  if (req.isAuthenticated()) {
     res.status(401).end();
   } else {
     const options = {};
-    if (req.params.is_fulfilled) {
-      options.is_fulfilled = req.params.is_fulfilled;
+    if (req.query.is_fulfilled) {
+      options.is_fulfilled = req.query.is_fulfilled;
     }
 
-    if (req.params.email) {
-      options.email = req.params.email;
+    if (req.query.email) {
+      options.email = req.query.email;
     }
 
-    if (req.params.services) {
-      const serviceArray = req.params.services.split(',');
+    if (req.query.services) {
+      const serviceArray = req.query.services.split(',');
       options.referrals = {
-        $exists: {
+        $elemMatch: {
           service: {
             $in: serviceArray,
           },
