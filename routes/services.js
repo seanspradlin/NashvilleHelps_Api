@@ -74,7 +74,7 @@ router.post('/', (req, res) => {
   winston.debug('POST /services');
 
   const required = ['name', 'category'];
-  if (!req.isAuthenticated() || !req.user.isAdmin) {
+  if (!req.isAuthenticated() || !req.user.is_admin) {
     res.status(401).end();
   } else if (!utils.checkProperties(required, req.body)) {
     res.status(422)
@@ -110,7 +110,7 @@ router.post('/', (req, res) => {
 router.put('/:service_id', (req, res) => {
   winston.debug(`PUT /services/${req.params.service_id}`);
 
-  if (!req.isAuthenticated() || !req.user.isAdmin) {
+  if (!req.isAuthenticated() || !req.user.is_admin) {
     res.status(401).end();
   } else {
     Service.findById(req.params.service_id)
@@ -141,7 +141,7 @@ router.put('/:service_id', (req, res) => {
 router.delete('/:service_id', (req, res) => {
   winston.debug(`DELETE /services/${req.params.service_id}`);
 
-  if (!req.isAuthenticated() || !req.user.isAdmin) {
+  if (!req.isAuthenticated() || !req.user.is_admin) {
     res.status(401).end();
   } else {
     Service.findOneAndRemove({ _id: req.params.service_id })

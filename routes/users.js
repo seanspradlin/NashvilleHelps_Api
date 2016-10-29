@@ -14,14 +14,14 @@ const winston = require('winston');
  * @apiSuccess  {String}    users.email
  * @apiSuccess  {String}    users.phone
  * @apiSuccess  {String}    users.agency
- * @apiSuccess  {Boolean}   users.isAdmin
+ * @apiSuccess  {Boolean}   users.is_admin
  *
  * @apiUse UnauthorizedError
  */
 router.get('/', (req, res) => {
   winston.debug('GET /users');
 
-  if (req.isAuthenticated() && req.user.isAdmin) {
+  if (req.isAuthenticated() && req.user.is_admin) {
     User.find()
       .then(users => {
         res.json(users.map(user => ({
@@ -29,7 +29,7 @@ router.get('/', (req, res) => {
           agency: user.agency,
           email: user.email,
           phone: user.phone,
-          isAdmin: user.isAdmin,
+          is_admin: user.is_admin,
           name: user.name,
         })));
       })
@@ -51,14 +51,14 @@ router.get('/', (req, res) => {
  * @apiSuccess  {String}    users.email
  * @apiSuccess  {String}    users.phone
  * @apiSuccess  {String}    users.agency
- * @apiSuccess  {Boolean}   users.isAdmin
+ * @apiSuccess  {Boolean}   users.is_admin
  *
  * @apiUse UnauthorizedError
  */
 router.get('/:user_id', (req, res) => {
   winston.debug(`GET /users/${req.params.user_id}`);
 
-  if (req.isAuthenticated() && req.user.isAdmin) {
+  if (req.isAuthenticated() && req.user.is_admin) {
     User.findById(req.params.user_id)
       .then(user => {
         res.json({
@@ -66,7 +66,7 @@ router.get('/:user_id', (req, res) => {
           agency: user.agency,
           email: user.email,
           phone: user.phone,
-          isAdmin: user.isAdmin,
+          is_admin: user.is_admin,
           name: user.name,
         });
       })
@@ -89,7 +89,7 @@ router.get('/:user_id', (req, res) => {
 router.delete('/:user_id', (req, res) => {
   winston.debug(`DELETE /users/${req.params.user_id}`);
 
-  if (req.isAuthenticated() && req.user.isAdmin) {
+  if (req.isAuthenticated() && req.user.is_admin) {
     User.findOneAndRemove({ _id: req.params.agency_id })
       .then(() => {
         res.end();

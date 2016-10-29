@@ -12,7 +12,7 @@ function createAdmin(agencyId, fn) {
     user.email = EMAIL;
     user.password = user.generateHash(PASSWORD);
     user.agency = agencyId;
-    user.isAdmin = true;
+    user.is_admin = true;
     user.save()
       .then(u => fn(null, u))
       .catch(e => fn(e));
