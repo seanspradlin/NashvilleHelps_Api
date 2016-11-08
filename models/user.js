@@ -14,10 +14,11 @@ const schema = new Schema({
     type: Schema.Types.ObjectId,
     required: true,
   },
-  isAdmin: {
+  is_admin: {
     type: Boolean,
     default: false,
   },
+  services: [Schema.Types.ObjectId],
 });
 
 schema.methods.generateHash = function generateHash(password) {

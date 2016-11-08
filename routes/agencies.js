@@ -6,7 +6,7 @@ const utils = require('../lib/utils');
 const winston = require('winston');
 const ExpiryStore = require('../lib/expiry-store');
 const store = new ExpiryStore();
-const privileged = (agency, user) => user.isAdmin || user.agency === agency;
+const privileged = (agency, user) => user.is_admin || user.agency === agency;
 
 /**
  * @api {get} /agencies Get all agencies
@@ -29,7 +29,7 @@ const privileged = (agency, user) => user.isAdmin || user.agency === agency;
 router.get('/', (req, res) => {
   winston.debug('GET /agencies');
 
-  if (!req.isAuthenticated() || !req.user.isAdmin) {
+  if (!req.isAuthenticated() || !req.user.is_admin) {
     res.status(401).end();
   } else {
     Agency.find()
@@ -108,7 +108,7 @@ router.post('/', (req, res) => {
   winston.debug('POST /agencies');
 
   const required = ['name', 'phone'];
-  if (!req.isAuthenticated() || !req.user.isAdmin) {
+  if (!req.isAuthenticated() || !req.user.is_admin) {
     res.status(401).end();
   } else if (!utils.checkProperties(required, req.body)) {
     res
@@ -193,7 +193,7 @@ router.put('/:agency_id', (req, res) => {
 router.delete('/:agency_id', (req, res) => {
   winston.debug(`DELETE /agencies/${req.params.agency_id}`);
 
-  if (!req.isAuthenticated() || !req.user.isAdmin) {
+  if (!req.isAuthenticated() || !req.user.is_admin) {
     res.status(401).end();
   } else {
     Agency.findOneAndRemove({ _id: req.params.agency_id })

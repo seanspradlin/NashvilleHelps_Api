@@ -17,7 +17,7 @@ const schema = new Schema({
   phone: String,
   assistant: String,
   referrals: [{
-    isComplete: {
+    is_complete: {
       type: Boolean,
       default: false,
     },
@@ -25,11 +25,13 @@ const schema = new Schema({
     requested: Date,
     service: Schema.Types.ObjectId,
     service_name: String,
+    notes: String,
   }],
-  isFulfilled: {
+  is_fulfilled: {
     type: Boolean,
     default: false,
   },
+  client_notes: String,
 });
 
 module.exports = mongoose.model('Client', schema);

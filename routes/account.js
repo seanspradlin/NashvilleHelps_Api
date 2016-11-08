@@ -26,7 +26,7 @@ const store = new ExpiryStore();
  * @apiSuccess  {String}    agency.address.state
  * @apiSuccess  {String}    agency.address.postal
  * @apiSuccess  {String}    agency.phone
- * @apiSuccess  {Boolean}   isAdmin
+ * @apiSuccess  {Boolean}   is_admin
  *
  * @apiUse UnauthorizedError
  */
@@ -45,7 +45,7 @@ router.get('/', (req, res) => {
             address: agency.address,
             phone: agency.phone,
           },
-          isAdmin: req.user.isAdmin,
+          is_admin: req.user.is_admin,
         });
       })
       .catch(error => {

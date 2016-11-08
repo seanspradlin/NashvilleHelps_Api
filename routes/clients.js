@@ -27,12 +27,14 @@ const winston = require('winston');
  * @apiSuccess  {String}    clients.address.postal
  * @apiSuccess  {String}    clients.phone
  * @apiSuccess  {String}    clients.assistant
+ * @apiSuccess  {String}    clients.client_notes
  * @apiSuccess  {Object[]}  clients.referrals
- * @apiSuccess  {Boolean}   clients.referrals.isComplete
+ * @apiSuccess  {Boolean}   clients.referrals.is_complete
  * @apiSuccess  {String}    clients.referrals.agency
  * @apiSuccess  {Date}      clients.referrals.requested
  * @apiSuccess  {String}    clients.referrals.service
  * @apiSuccess  {String}    clients.referrals.service_name
+ * @apiSuccess  {String}    clients.referrals.notes
  *
  * @apiUse UnauthorizedError
  */
@@ -43,22 +45,22 @@ router.get('/', (req, res) => {
     res.status(401).end();
   } else {
     const options = {};
-    if (req.params.is_fulfilled) {
-      options.isFulfilled = req.params.is_fulfilled;
+    if (req.query.is_fulfilled) {
+      options.is_fulfilled = req.query.is_fulfilled;
     }
 
-    if (req.params.email) {
-      options.email = req.params.email;
+    if (req.query.email) {
+      options.email = req.query.email;
     }
 
-    if (req.params.services) {
-      const serviceArray = req.params.services.split(',');
+    if (req.query.services) {
+      const serviceArray = req.query.services.split(',');
       options.referrals = {
-        $exists: {
+        $elemMatch: {
           service: {
             $in: serviceArray,
           },
-          isComplete: false,
+          is_complete: false,
         },
       };
     }
@@ -93,12 +95,14 @@ router.get('/', (req, res) => {
  * @apiSuccess  {String}    address.postal
  * @apiSuccess  {String}    phone
  * @apiSuccess  {String}    assistant
+ * @apiSuccess  {String}    client_notes
  * @apiSuccess  {Object[]}  referrals
- * @apiSuccess  {Boolean}   referrals.isComplete
+ * @apiSuccess  {Boolean}   referrals.is_complete
  * @apiSuccess  {String}    referrals.agency
  * @apiSuccess  {Date}      referrals.requested
  * @apiSuccess  {String}    referrals.service
  * @apiSuccess  {String}    referrals.service_name
+ * @apiSuccess  {String}    referrals.notes
  *
  * @apiUse UnauthorizedError
  */
@@ -134,6 +138,7 @@ router.get('/:client_id', (req, res) => {
  * @apiParam  {String}    postal
  * @apiParam  {String}    phone
  * @apiParam  {String}    assistant
+ * @apiParam  {String}    notes
  * @apiParam  {String[]}  services
  *
  * @apiSuccess  {Object}    name
@@ -148,12 +153,14 @@ router.get('/:client_id', (req, res) => {
  * @apiSuccess  {String}    address.postal
  * @apiSuccess  {String}    phone
  * @apiSuccess  {String}    assistant
+ * @apiSuccess  {String}    client_notes
  * @apiSuccess  {Object[]}  referrals
- * @apiSuccess  {Boolean}   referrals.isComplete
+ * @apiSuccess  {Boolean}   referrals.is_complete
  * @apiSuccess  {String}    referrals.agency
  * @apiSuccess  {Date}      referrals.requested
  * @apiSuccess  {String}    referrals.service
  * @apiSuccess  {String}    referrals.service_name
+ * @apiSuccess  {String}    referrals.notes
  */
 router.post('/', (req, res) => {
   winston.debug('POST /clients');
@@ -185,6 +192,7 @@ router.post('/', (req, res) => {
       },
       phone: req.body.phone,
       assistant: req.body.assistant,
+      client_notes: req.body.notes,
     });
 
     let serviceArray;
@@ -242,6 +250,7 @@ router.post('/', (req, res) => {
  * @apiParam  {String}    postal
  * @apiParam  {String}    phone
  * @apiParam  {String}    assistant
+ * @apiParam  {String}    client_notes
  *
  * @apiSuccess  {Object}    name
  * @apiSuccess  {String}    name.first
@@ -255,17 +264,19 @@ router.post('/', (req, res) => {
  * @apiSuccess  {String}    address.postal
  * @apiSuccess  {String}    phone
  * @apiSuccess  {String}    assistant
+ * @apiSuccess  {String}    client_notes
  * @apiSuccess  {Object[]}  referrals
- * @apiSuccess  {Boolean}   referrals.isComplete
+ * @apiSuccess  {Boolean}   referrals.is_complete
  * @apiSuccess  {Date}      referrals.requested
  * @apiSuccess  {String}    referrals.service
+ * @apiSuccess  {String}    referrals.notes
  *
  * @apiUse UnauthorizedError
  */
 router.put('/:client_id', (req, res) => {
   winston.debug(`PUT /clients/${req.params.client_id}`);
 
-  if (!req.isAuthenticated() || !req.user.isAdmin) {
+  if (!req.isAuthenticated() || !req.user.is_admin) {
     res.status(401).end();
   } else {
     const properties = {
@@ -283,6 +294,7 @@ router.put('/:client_id', (req, res) => {
       },
       phone: req.body.phone,
       assistant: req.body.assistant,
+      client_notes: req.body.client_notes,
     };
     Client.update({ _id: req.params.client_id }, properties)
       .then(client => {
@@ -302,6 +314,7 @@ router.put('/:client_id', (req, res) => {
  *
  * @apiParam  {String}  client_id
  * @apiParam  {String}  service_id
+ * @apiParam  {String}  notes
  *
  * @apiUse UnauthorizedError
  */
@@ -316,11 +329,12 @@ router.post('/:client_id/service/:service_id', (req, res) => {
         let isFulfilled = true;
         client.referrals.forEach((r, i) => {
           if (r.service.toString() === req.params.service_id) {
-            client.referrals[i].isComplete = true;
+            client.referrals[i].is_complete = true;
             client.referrals[i].agency = req.user.agency;
+            client.referrals[i].notes = req.body.notes;
           }
 
-          if (!client.referrals[i].isComplete) {
+          if (!client.referrals[i].is_complete) {
             isFulfilled = false;
           }
         });
@@ -347,7 +361,7 @@ router.post('/:client_id/service/:service_id', (req, res) => {
 router.delete('/:client_id', (req, res) => {
   winston.debug(`DELETE /clients/${req.params.client_id}`);
 
-  if (!req.isAuthenticated() || !req.user.isAdmin) {
+  if (!req.isAuthenticated() || !req.user.is_admin) {
     res.status(401).end();
   } else {
     Client.findOneAndRemove({ _id: req.params.client_id })
