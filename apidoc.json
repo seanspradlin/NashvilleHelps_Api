@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Back-end REST API for the Nashville Helps application",
   "title": "Nashville Helps API Documentation",
-  "url": "http://localhost:8080",
-  "sampleUrl": "http://localhost:8080"
+  "url": "http://localhost:8080/api",
+  "sampleUrl": "http://localhost:8080/api"
 }
 
