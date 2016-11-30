@@ -328,7 +328,7 @@ router.post('/:client_id/service/:service_id', (req, res) => {
       .then(client => {
         let isFulfilled = true;
         client.referrals.forEach((r, i) => {
-          if (r.service.toString() === req.params.service_id) {
+          if (r.service.toString().toUpperCase() === req.params.service_id.toUpperCase()) {
             client.referrals[i].is_complete = true;
             client.referrals[i].agency = req.user.agency;
             client.referrals[i].notes = req.body.notes;
@@ -338,7 +338,7 @@ router.post('/:client_id/service/:service_id', (req, res) => {
             isFulfilled = false;
           }
         });
-        client.isFulfilled = isFulfilled;
+        client.is_fulfilled = isFulfilled;
         return client.save();
       })
       .then(() => {
