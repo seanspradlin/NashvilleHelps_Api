@@ -154,6 +154,7 @@ router.get('/:client_id', (req, res) => {
  * @apiSuccess  {String}    phone
  * @apiSuccess  {String}    assistant
  * @apiSuccess  {String}    client_notes
+ * @apiSuccess  {String}    date_created
  * @apiSuccess  {Object[]}  referrals
  * @apiSuccess  {Boolean}   referrals.is_complete
  * @apiSuccess  {String}    referrals.agency
@@ -193,6 +194,7 @@ router.post('/', (req, res) => {
       phone: req.body.phone,
       assistant: req.body.assistant,
       client_notes: req.body.notes,
+      date_created: new Date(),
     });
 
     let serviceArray;
@@ -265,6 +267,8 @@ router.post('/', (req, res) => {
  * @apiSuccess  {String}    phone
  * @apiSuccess  {String}    assistant
  * @apiSuccess  {String}    client_notes
+ * @apiSuccess  {String}    date_created
+ * @apiSuccess  {String}    date_completed
  * @apiSuccess  {Object[]}  referrals
  * @apiSuccess  {Boolean}   referrals.is_complete
  * @apiSuccess  {Date}      referrals.requested
@@ -345,7 +349,10 @@ router.post('/:client_id/service/:service_id', (req, res) => {
             isFulfilled = false;
           }
         });
-        client.is_fulfilled = isFulfilled;
+        if (isFulfilled) {
+          client.is_fulfilled = true;
+          client.date_completed = new Date();
+        }
         return client.save();
       })
       .then(() => {

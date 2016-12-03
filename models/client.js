@@ -31,6 +31,8 @@ const schema = new Schema({
     type: Boolean,
     default: false,
   },
+  date_completed: Date,
+  date_created: Date,
   client_notes: String,
 });
 
