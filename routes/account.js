@@ -18,6 +18,7 @@ const store = new ExpiryStore();
  * @apiSuccess  {String}    email
  * @apiSuccess  {String}    phone
  * @apiSuccess  {Object}    agency
+ * @apiSuccess  {String}    agency._id
  * @apiSuccess  {String}    agency.name
  * @apiSuccess  {Object}    agency.address
  * @apiSuccess  {String}    agency.address.street1
@@ -41,6 +42,7 @@ router.get('/', (req, res) => {
           email: req.user.email,
           phone: req.user.phone,
           agency: {
+            _id: req.user.agency,
             name: agency.name,
             address: agency.address,
             phone: agency.phone,
