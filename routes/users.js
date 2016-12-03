@@ -45,6 +45,8 @@ router.get('/', (req, res) => {
  * @apiName GetSpecificUser
  * @apiGroup User
  *
+ * @apiParam    {String}    user_id
+ *
  * @apiSuccess  {Object}    users.name
  * @apiSuccess  {String}    users.name.first
  * @apiSuccess  {String}    users.name.last
@@ -82,6 +84,7 @@ router.get('/:user_id', (req, res) => {
  * @apiName UpdateUser
  * @apiGroup User
  *
+ * @apiParam  {String}  user_id
  * @apiParam  {String}  [first_name]
  * @apiParam  {String}  [last_name]
  * @apiParam  {String}  [email]
