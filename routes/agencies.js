@@ -6,7 +6,7 @@ const utils = require('../lib/utils');
 const winston = require('winston');
 const ExpiryStore = require('../lib/expiry-store');
 const store = new ExpiryStore();
-const privileged = (agency, user) => user.is_admin || user.agency === agency;
+const privileged = (agency, user) => user.is_admin || user.agency.toString() === agency;
 
 /**
  * @api {get} /agencies Get all agencies
