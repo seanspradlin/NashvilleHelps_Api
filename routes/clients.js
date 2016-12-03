@@ -315,11 +315,13 @@ router.put('/:client_id', (req, res) => {
  * @apiParam  {String}  client_id
  * @apiParam  {String}  service_id
  * @apiParam  {String}  notes
+ * @apiParam  {Boolean} [is_complete=true]
  *
  * @apiUse UnauthorizedError
  */
 router.post('/:client_id/service/:service_id', (req, res) => {
   winston.debug(`POST /clients/${req.params.client_id}/service/${req.params.service_id}`);
+  req.body.is_complete = req.body.is_complete || true;
 
   if (!req.isAuthenticated()) {
     res.status(401).end();
@@ -329,9 +331,14 @@ router.post('/:client_id/service/:service_id', (req, res) => {
         let isFulfilled = true;
         client.referrals.forEach((r, i) => {
           if (r.service.toString().toUpperCase() === req.params.service_id.toUpperCase()) {
-            client.referrals[i].is_complete = true;
+            const isComplete = typeof req.body.is_complete === 'boolean'
+                             ? req.body.is_complete
+                             : req.body.is_complete === 'true';
+            client.referrals[i].is_complete = isComplete;
             client.referrals[i].agency = req.user.agency;
-            client.referrals[i].notes = req.body.notes;
+            if (req.body.notes) {
+              client.referrals[i].notes = req.body.notes;
+            }
           }
 
           if (!client.referrals[i].is_complete) {
