@@ -17,6 +17,10 @@ const schema = new Schema({
     type: String,
     required: true,
   },
+  services: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Service',
+  }],
 });
 
 module.exports = mongoose.model('Agency', schema);
