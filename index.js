@@ -24,6 +24,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api', routes);
+app.get('*', (req, res) => {
+  res.sendFile(`${staticPath}/index.html`);
+});
 
 app.listen(config.port, () => {
   winston.info(`Server is running on port ${config.port}`);
