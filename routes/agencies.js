@@ -143,31 +143,36 @@ router.post('/', (req, res) => {
  * @apiGroup Agency
  *
  * @apiParam  {String}  agency_id
- * @apiParam  {String}  [name]
+ * @apiParam  {String}  name
+ * @apiParam  {String}  phone
  * @apiParam  {String}  [street1]
  * @apiParam  {String}  [street2]
  * @apiParam  {String}  [city]
  * @apiParam  {String}  [state]
  * @apiParam  {String}  [postal]
- * @apiParam  {String}  [phone]
  *
  * @apiUse UnauthorizedError
  */
 router.put('/:agency_id', (req, res) => {
   winston.debug(`PUT /agencies/${req.params.agency_id}`);
 
+  const required = ['name', 'phone'];
   if (!req.isAuthenticated() || !privileged(req.params.agency_id, req.user)) {
     res.status(401).end();
+  } else if (!utils.checkProperties(required, req.body)) {
+    res
+      .status(422)
+      .json({ error: `${required.join(',')} are required` });
   } else {
     Agency.findById(req.params.agency_id)
       .then(agency => {
-        agency.name = req.body.name || agency.name;
-        agency.address.street1 = req.body.street1 || agency.address.street1;
-        agency.address.street2 = req.body.street2 || agency.address.street2;
-        agency.address.city = req.body.city || agency.address.city;
-        agency.address.state = req.body.state || agency.address.state;
-        agency.address.postal = req.body.postal || agency.address.postal;
-        agency.phone = req.body.phone || agency.phone;
+        agency.name = req.body.name;
+        agency.address.street1 = req.body.street1;
+        agency.address.street2 = req.body.street2;
+        agency.address.city = req.body.city;
+        agency.address.state = req.body.state;
+        agency.address.postal = req.body.postal;
+        agency.phone = req.body.phone;
         return agency.save();
       })
       .then(agency => {
