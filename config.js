@@ -1,7 +1,7 @@
 'use strict';
 module.exports = {
   db: {
-    url: process.env.MONGO_URL || 'mongodb://localhost/nash-helps',
+    url: process.env.MONGO_URL || 'mongodb://mongo/nash-helps',
   },
   logLevel: process.env.LOG_LEVEL || 'debug',
   port: process.env.PORT || 8080,

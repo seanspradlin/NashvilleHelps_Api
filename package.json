@@ -4,6 +4,7 @@
   "description": "Back-end REST API for the Nashville Helps application.",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon index.js",
     "test": "mocha",
     "docs": "apidoc -i routes -o docs",
     "seed": "node seed.js"
@@ -26,6 +27,7 @@
     "express-session": "^1.14.1",
     "helmet": "^2.3.0",
     "mongoose": "^4.6.3",
+    "nodemon": "^1.11.0",
     "passport": "^0.3.2",
     "winston": "^2.2.0"
   },

@@ -13,7 +13,7 @@ const app = express();
 
 winston.level = config.logLevel;
 
-app.use(express.static(staticPath));
+// app.use(express.static(staticPath));
 app.use(helmet());
 app.use('/api/docs', express.static(`${__dirname}/docs`));
 app.use(cookieParser());
@@ -24,9 +24,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use('/api', routes);
-app.get('*', (req, res) => {
-  res.sendFile(`${staticPath}/index.html`);
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(`${staticPath}/index.html`);
+// });
 
 app.listen(config.port, () => {
   winston.info(`Server is running on port ${config.port}`);
